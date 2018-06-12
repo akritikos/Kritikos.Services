@@ -6,7 +6,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Extensions\Extensions.Byte.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="..\..\.config\stylecop.json" Link="stylecop.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Extensions\Extensions.Byte.cs" />
   </ItemGroup>
 
   <ItemGroup>

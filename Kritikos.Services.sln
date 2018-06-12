@@ -15,6 +15,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kritikos.Services.Helpers",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kritikos.Services.Interfaces", "src\Kritikos.Services.Interfaces\Kritikos.Services.Interfaces.csproj", "{B9AA9BE4-A961-475C-BF8F-4FB167B85428}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{8BF80E5C-68FD-40C7-9EF9-B28B9B9E32A2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{8F7473AA-BB70-4CED-A372-0FE1F3CB10AD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,6 +36,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{067101B4-6905-4901-A8D3-D5911CA35547} = {8BF80E5C-68FD-40C7-9EF9-B28B9B9E32A2}
+		{B9AA9BE4-A961-475C-BF8F-4FB167B85428} = {8BF80E5C-68FD-40C7-9EF9-B28B9B9E32A2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {39A8D047-3F74-43AA-9860-FBCA305BEB92}
