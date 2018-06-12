@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <CodeAnalysisRuleSet>..\..\.config\stylecop.ruleset</CodeAnalysisRuleSet>
+    <AssemblyName>Kritikos.Services</AssemblyName>
+    <RootNamespace>Kritikos.Services</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="..\..\.config\stylecop.json" Link="stylecop.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.0-beta007">
+      <PrivateAssets>All</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+
+</Project>
