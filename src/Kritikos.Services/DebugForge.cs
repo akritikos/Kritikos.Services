@@ -1,10 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Kritikos.Services.Helpers
+namespace Kritikos.Services
 {
-    class DebugForge
+    public sealed class DebugForge
     {
 	    public DebugForge()
 	    {
