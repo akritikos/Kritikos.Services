@@ -17,6 +17,6 @@ cache:
 install:
   - dotnet restore --packages packages
 build:
-  project: Olympus.sln
+  project: Kritikos.Services.sln
   parallel: true
   verbosity: minimal
