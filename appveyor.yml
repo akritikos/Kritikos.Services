@@ -27,13 +27,13 @@ before_build:
   - choco install opencover.portable
   - choco install codecov
   - choco install msbuild-sonarqube-runner
-  - SonarQube.Scanner.MSBuild.exe begin /k:"Services" /d:sonar.organization="akritikos-github" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login="$env:SONAR_REPO_TOKEN"
+  - SonarScanner.MSBuild begin /k:"Services" /d:sonar.organization="akritikos-github" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login="$env:SONAR_REPO_TOKEN"
 build:
   project: Kritikos.Services.sln
   parallel: true
   verbosity: minimal
 after_build:
-  - SonarQube.Scanner.MSBuild end /d:"sonar.login=$env:SONARCLOUD_TOKEN"
+  - SonarScanner.MSBuild end /d:"sonar.login=$env:SONARCLOUD_TOKEN"
 test_script:
 - ps: >-
     Remove-Item -Recurse -Force .sonarqube
