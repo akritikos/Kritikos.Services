@@ -13,7 +13,7 @@ namespace Kritikos.Services.Extensions
 		{
 			// Base64 length is equal to 4/3 of the original byte size
 			// padded to multiples of four
-			return 4 * (int) Math.Ceiling(array.Length / 3.0);
+			return 4 * (int)Math.Ceiling(array.Length / 3.0);
 		}
 
 		/// <summary>
