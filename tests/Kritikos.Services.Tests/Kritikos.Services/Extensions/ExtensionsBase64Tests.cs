@@ -1,4 +1,6 @@
+#pragma warning disable SA1200 // Using directives should be placed correctly
 using Kritikos.Services.Extensions;
+#pragma warning restore SA1200 // Using directives should be placed correctly
 
 namespace Kritikos.Services.Tests
 {
