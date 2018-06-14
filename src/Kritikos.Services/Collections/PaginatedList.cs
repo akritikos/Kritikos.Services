@@ -1,4 +1,4 @@
-namespace Kritikos.Services.Helpers.Collections
+namespace Kritikos.Services.Collections
 {
 	using System;
 	using System.Collections.Generic;
@@ -13,7 +13,7 @@ namespace Kritikos.Services.Helpers.Collections
 	/// Adds pagination data on top of list elements.
 	/// </remarks>
 	/// <typeparam name="T">The type of elements in the list.</typeparam>
-	public class PaginatedList<T> : List<T>
+	public sealed class PaginatedList<T> : List<T>
 	{
 		/// <summary>
 		/// Initializes a new instance of the <see cref="PaginatedList{T}"/> class.
@@ -75,9 +75,14 @@ namespace Kritikos.Services.Helpers.Collections
 		{
 			Clear();
 
-			if (pageSize < 1 || pageNumber < 1)
+			if (pageSize < 2)
 			{
-				throw new ArgumentException("Page size and number should both be greater than 1!");
+				throw new ArgumentException("Page size should allow for more than one element!");
+			}
+
+			if (pageNumber < 1)
+			{
+				throw new ArgumentException("Page number should be greater than 1!");
 			}
 		}
 
