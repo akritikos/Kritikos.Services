@@ -18,6 +18,7 @@ install:
   - dotnet restore --packages packages
 before_build:
   - cd C:\Projects\Kritikos.Services
+  - C:
   - git submodule update --init --recursive
 build:
   project: Kritikos.Services.sln
