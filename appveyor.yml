@@ -17,6 +17,7 @@ cache:
 install:
   - dotnet restore --packages packages
 before_build:
+  - cd C:\Projects\Kritikos.Services
   - git submodule update --init --recursive
 build:
   project: Kritikos.Services.sln
