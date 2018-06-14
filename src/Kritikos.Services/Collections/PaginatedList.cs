@@ -20,8 +20,9 @@ namespace Kritikos.Services.Collections
 		/// </summary>
 		/// <param name="source">Queryable source, should contain all elements to be paginated.</param>
 		/// <param name="pageSize">Number of elements per page.</param>
-		/// <param name="pageNumber">Number of page to fetch from <see cref="source"/>.</param>
-		/// /// <exception cref="ArgumentException"><see cref="pageSize"/> or <see cref="pageNumber"/> are not greater or equal to 1.</exception>
+		/// <param name="pageNumber">Number of page to fetch from source.</param>
+		/// <exception cref="ArgumentException"><paramref name="pageNumber"/> is not greater or equal to 1.</exception>
+		/// <exception cref="ArgumentException"><paramref name="pageSize"/> does not allow for more than one element.</exception>
 		public PaginatedList(IQueryable<T> source, int pageSize, int pageNumber)
 			: this(pageSize, pageNumber)
 		{
@@ -37,12 +38,15 @@ namespace Kritikos.Services.Collections
 		/// <summary>
 		/// Initializes a new instance of the <see cref="PaginatedList{T}"/> class.
 		/// </summary>
-		/// <param name="source">Enumerable source, should contain the elements in the page specified by <see cref="pageNumber" />.</param>
+		/// <param name="source">Enumerable source, should contain the elements in the page specified by <paramref name="pageNumber"/>.</param>
 		/// <param name="pageSize">Number of elements per page.</param>
 		/// <param name="pageNumber">Number of page contained in <see cref="PaginatedList{T}" />.</param>
 		/// <param name="totalElements">Total number of elements across all pages.</param>
-		/// <exception cref="ArgumentException"><see cref="source" /> contains more elements than <see cref="pageSize" /> allows.</exception>
-		/// <exception cref="ArgumentException"><see cref="pageSize" /> or <see cref="pageNumber" /> are not greater or equal to 1.</exception>
+		/// <exception cref="ArgumentException"><paramref name="source"/> contains more elements than <paramref name="pageSize"/> allows.</exception>
+		/// <exception cref="ArgumentException"><paramref name="pageNumber"/> is not greater or equal to 1.</exception>
+		/// <exception cref="ArgumentException"><paramref name="pageSize"/> does not allow for more than one element.</exception>
+		/// <exception cref="ArgumentException"><paramref name="totalElements"/> is negative.</exception>
+		/// <exception cref="ArgumentException">Trying to create a <paramref name="pageNumber"/> that can not exist with the given combination of <paramref name="totalElements"/> and <paramref name="pageSize"/>.</exception>
 		public PaginatedList(IEnumerable<T> source, int pageSize, int pageNumber, int totalElements)
 			: this(pageSize, pageNumber)
 		{
