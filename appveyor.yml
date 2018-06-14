@@ -6,7 +6,7 @@ branches:
     - develop
 image: Visual Studio 2017
 clone_folder: C:\Projects\Kritikos.Services
-shallow_clone: true
+clone_depth: 1
 environment:
   MSBUILDDISABLENODEREUSE: 1
 matrix:
