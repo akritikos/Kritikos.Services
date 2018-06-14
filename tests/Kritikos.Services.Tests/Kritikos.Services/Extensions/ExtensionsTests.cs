@@ -13,12 +13,12 @@ namespace Kritikos.Services.Tests
 	/// </summary>
 	public class ExtensionsTests
 	{
-		private readonly Random rnd = new Random();
-		private byte[][] _buffArray;
+		private readonly Random _rnd = new Random();
+		private readonly byte[][] _buffArray;
 
 		public ExtensionsTests()
 		{
-			var size = rnd.Next(5, 30);
+			var size = _rnd.Next(5, 30);
 			_buffArray = new[]
 			{
 				new byte[size],
@@ -28,7 +28,7 @@ namespace Kritikos.Services.Tests
 			};
 			foreach (var buff in _buffArray)
 			{
-				rnd.NextBytes(buff);
+				_rnd.NextBytes(buff);
 			}
 		}
 
