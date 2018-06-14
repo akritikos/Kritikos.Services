@@ -52,6 +52,11 @@ namespace Kritikos.Services.Helpers.Collections
 				throw new ArgumentException("Source contains more elements than those allowed in a single page!");
 			}
 
+			if (totalElements < 0)
+			{
+				throw new ArgumentException("Total elements should be a positive integer!");
+			}
+
 			AddRange(elements);
 			FillPaginationInfo(pageSize, pageNumber, totalElements);
 		}
