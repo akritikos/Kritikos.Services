@@ -28,5 +28,50 @@ namespace Kritikos.Services.Tests.Kritikos.Services.Collections
 			var pagedList = new PaginatedList<string>(data.Take(2), 2, 1, data.Count());
 			Assert.True(pagedList.SequenceEqual(pagedQueryable));
 		}
+
+		[Fact]
+		public void InvalidPageNumberTest()
+		{
+			var exception = Record.Exception(() => new PaginatedList<string>(data, 2, 0, data.Count()));
+			Assert.NotNull(exception);
+			Assert.IsType<ArgumentException>(exception);
+			Assert.Equal("Page number should be greater than 1!", exception.Message);
+		}
+
+		[Fact]
+		public void InvalidPageSizeTest()
+		{
+			var exception = Record.Exception(() => new PaginatedList<string>(data.AsQueryable(), 1, 1));
+			Assert.NotNull(exception);
+			Assert.IsType<ArgumentException>(exception);
+			Assert.Equal("Page size should allow for more than one element!", exception.Message);
+		}
+
+		[Fact]
+		public void TooManyElementsTest()
+		{
+			var exception = Record.Exception(() => new PaginatedList<string>(data, 2, 1, data.Count()));
+			Assert.NotNull(exception);
+			Assert.IsType<ArgumentException>(exception);
+			Assert.Equal("Source contains more elements than those allowed in a single page!", exception.Message);
+		}
+
+		[Fact]
+		public void NoTotalElementsTest()
+		{
+			var exception = Record.Exception(() => new PaginatedList<string>(data, 5, 1, -1));
+			Assert.NotNull(exception);
+			Assert.IsType<ArgumentException>(exception);
+			Assert.Equal("Total elements should be a positive integer!", exception.Message);
+		}
+
+		[Fact]
+		public void NonExistingPageNumberTest()
+		{
+			var exception = Record.Exception(() => new PaginatedList<string>(data, 5, 2, 5));
+			Assert.NotNull(exception);
+			Assert.IsType<ArgumentException>(exception);
+			Assert.Equal("Page number outside range specified by total elements and page size!", exception.Message);
+		}
 	}
 }
