@@ -57,6 +57,11 @@ namespace Kritikos.Services.Helpers.Collections
 				throw new ArgumentException("Total elements should be a positive integer!");
 			}
 
+			if (totalElements / (double)pageSize < pageNumber)
+			{
+				throw new ArgumentException("Page number outside range specified by total elements and page size!");
+			}
+
 			AddRange(elements);
 			FillPaginationInfo(pageSize, pageNumber, totalElements);
 		}
