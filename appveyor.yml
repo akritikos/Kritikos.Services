@@ -1,0 +1,22 @@
+version: 1.0.{build}-{branch}
+configuration: Release
+branches:
+  only:
+    - master
+    - develop
+image: Visual Studio 2017
+clone_folder: C:\Projects\Kritikos.Services
+shallow_clone: true
+environment:
+  MSBUILDDISABLENODEREUSE: 1
+matrix:
+  fast_finish: true
+cache:
+  - packages
+  - C:\Users\appveyor\.sonar\cache
+install:
+  - dotnet restore --packages packages
+build:
+  project: Olympus.sln
+  parallel: true
+  verbosity: minimal
