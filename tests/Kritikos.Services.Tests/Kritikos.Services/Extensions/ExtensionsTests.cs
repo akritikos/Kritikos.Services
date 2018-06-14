@@ -2,10 +2,9 @@
 using Kritikos.Services.Extensions;
 #pragma warning restore SA1200 // Using directives should be placed correctly
 
-namespace Kritikos.Services.Tests
+namespace Kritikos.Services.Tests.Kritikos.Services.Extensions
 {
 	using System;
-
 	using Xunit;
 
 	/// <summary>
