@@ -1,15 +1,16 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Kritikos.Services.Helpers.Collections;
-using Xunit;
 
 namespace Kritikos.Services.Tests.Kritikos.Services.Collections
 {
+	using System;
+	using System.Collections.Generic;
+	using System.Linq;
+	using System.Text;
+	using Xunit;
+
 	public class PaginatedListTests
 	{
-		IEnumerable<string> data = new List<string>
+		private readonly IEnumerable<string> data = new List<string>
 		{
 			"Nessos",
 			"Information",
