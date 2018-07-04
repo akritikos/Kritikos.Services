@@ -6,6 +6,7 @@
     <IsPackable>false</IsPackable>
     <DebugType>Full</DebugType>
     <StartupObject />
+    <RootNamespace>Kritikos.ServicesTests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

@@ -1,13 +1,9 @@
-#pragma warning disable SA1200 // Using directives should be placed correctly
-using Kritikos.Services.Collections;
-
-#pragma warning restore SA1200 // Using directives should be placed correctly
-
-namespace Kritikos.Services.Tests.Kritikos.Services.Collections
+namespace Kritikos.ServicesTests.CollectionsTests
 {
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
+	using Kritikos.Services.Collections;
 	using Xunit;
 
 	public class PaginatedListTests
