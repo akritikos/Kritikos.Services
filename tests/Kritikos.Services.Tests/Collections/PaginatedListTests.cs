@@ -1,4 +1,4 @@
-namespace Kritikos.ServicesTests.CollectionsTests
+namespace Kritikos.ServicesTests.Collections
 {
 	using System;
 	using System.Collections.Generic;
