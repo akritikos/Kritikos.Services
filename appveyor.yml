@@ -18,8 +18,10 @@ environment:
 matrix:
   fast_finish: true
 cache:
-  - packages
-  - C:\Users\appveyor\.sonar\cache
+  - packages -> appveyor.yml
+  - C:\Users\appveyor\.sonar\cache -> appveyor.yml
+  - C:\ProgramData\chocolatey\bin -> appveyor.yml
+  - C:\ProgramData\chocolatey\lib -> appveyor.yml
 install:
   - git submodule -q update --init
   - dotnet restore --packages packages
