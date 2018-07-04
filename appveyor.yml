@@ -25,13 +25,10 @@ install:
   - dotnet restore --packages packages
 before_build:
 - ps: >-
-  choco install opencover.portable -y
-
-  choco install codecov -y
-
-  choco install msbuild-sonarqube-runner -y
-
-  SonarScanner.MSBuild begin /k:"Services" /d:"sonar.host.url=https://sonarcloud.io" /d:"sonar.organization=akritikos-github" /d:sonar.login=$env:SONAR_REPO_TOKEN
+    choco install opencover.portable -y
+    choco install codecov -y
+    choco install msbuild-sonarqube-runner -y
+    SonarScanner.MSBuild begin /k:"Services" /d:"sonar.host.url=https://sonarcloud.io" /d:"sonar.organization=akritikos-github" /d:sonar.login=$env:SONAR_REPO_TOKEN
 build:
   project: Kritikos.Services.sln
   parallel: true
