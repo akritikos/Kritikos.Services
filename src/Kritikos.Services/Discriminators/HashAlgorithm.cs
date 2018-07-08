@@ -1,4 +1,4 @@
-namespace Kritikos.Services.Contracts
+namespace Kritikos.Services.Discriminators
 {
 	using System.Diagnostics.CodeAnalysis;
 
