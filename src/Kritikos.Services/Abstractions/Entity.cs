@@ -2,20 +2,16 @@ namespace Kritikos.Services.Abstractions
 {
 	using System;
 	using System.ComponentModel;
-	using System.Runtime.CompilerServices;
 	using AutoMapper;
-	using Kritikos.Services.Annotations;
 	using Kritikos.Services.Contracts;
 
-	public abstract class Entity<TKey> : IEntity<TKey>, IDatabaseAuditable, INotifyPropertyChanged
+	public abstract class Entity<TKey> : IEntity<TKey>, IDatabaseAuditable
 	{
 		protected Entity()
 		{
 			Created = DateTime.UtcNow;
 			Updated = Updated > Created ? Updated : Created;
 		}
-
-		public event PropertyChangedEventHandler PropertyChanged;
 
 		public TKey Id { get; set; }
 
@@ -34,25 +30,6 @@ namespace Kritikos.Services.Abstractions
 			where TModel : ViewModel<TKey>
 		{
 			return mapper.Map<TModel>(this);
-		}
-
-		[NotifyPropertyChangedInvocator]
-		protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
-		{
-			Updated = DateTime.UtcNow;
-			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-		}
-
-		protected bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
-		{
-			if (Equals(storage, value))
-			{
-				return false;
-			}
-
-			storage = value;
-			OnPropertyChanged(propertyName);
-			return true;
 		}
 	}
 }
