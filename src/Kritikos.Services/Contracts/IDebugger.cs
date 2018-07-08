@@ -1,4 +1,4 @@
-namespace Kritikos.Services.Helpers.Contracts
+namespace Kritikos.Services.Contracts
 {
 	/// <summary>
 	/// Generic Identifier for debug methods, used in Reflection to load debuggers dynamically
