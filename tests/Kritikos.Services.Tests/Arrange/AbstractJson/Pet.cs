@@ -1,6 +1,8 @@
 namespace Kritikos.ServicesTests.Arrange.AbstractJson
 {
-	public abstract class Pet
+	using Kritikos.Services.Abstractions;
+
+	public abstract class Pet : Entity<long>
 	{
 		public string Name { get; set; }
 	}
@@ -13,5 +15,9 @@ namespace Kritikos.ServicesTests.Arrange.AbstractJson
 	public class Cat : Pet
 	{
 		public bool WantsToKillYou { get; set; } = true;
+	}
+
+	public class Aligator : Pet
+	{
 	}
 }

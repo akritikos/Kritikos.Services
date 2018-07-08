@@ -1,16 +1,13 @@
-#pragma warning disable SA1200 // Using directives should be placed correctly
-using Kritikos.Services.Extensions;
-#pragma warning restore SA1200 // Using directives should be placed correctly
-
-namespace Kritikos.Services.Tests.Kritikos.Services.Extensions
+namespace Kritikos.ServicesTests.Extensions
 {
 	using System;
+	using Kritikos.Services.Extensions;
 	using Xunit;
 
 	/// <summary>
 	/// Contains unit tests for Helper extensions
 	/// </summary>
-	public class ExtensionsTests
+	public partial class ExtensionsTests
 	{
 		private readonly Random _rnd = new Random();
 		private readonly byte[][] _buffArray;
