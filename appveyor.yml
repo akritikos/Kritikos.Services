@@ -24,17 +24,16 @@ cache:
   # - C:\Users\appveyor\.sonar\cache -> appveyor.yml
   # - C:\ProgramData\chocolatey\bin -> appveyor.yml
   # - C:\ProgramData\chocolatey\lib -> appveyor.yml
+init:
+  - set PATH=C:\ProgramData\chocolatey\bin;%PATH%
 install:
   - git submodule -q update --init
-  - set PATH=C:\ProgramData\chocolatey\bin;%PATH%
   - dotnet restore --packages packages
 before_build:
 - ps: >-
-    choco install opencover.portable codecov sonarscanner-msbuild-netcoreapp2.0 -y --no-progress
+    choco install opencover.portable codecov msbuild-sonarqube-runner sonarscanner-msbuild-netcoreapp2.0 -y --no-progress
 
     choco install coveralls.io --source https://dotnet.myget.org/F/dotnet-buildtools/api/v2 -y --no-progress
-
-    dir C:\ProgramData\chocolatey\bin
 
     SonarQube.Scanner.MSBuild begin /k:"Services" /d:"sonar.host.url=https://sonarcloud.io" /d:"sonar.organization=akritikos-github" /d:sonar.login=$env:SONAR_REPO_TOKEN
 build:
@@ -45,10 +44,6 @@ after_build:
   - SonarQube.Scanner.MSBuild end /d:"sonar.login=$env:SONARCLOUD_TOKEN"
 test_script:
 - ps: >-
-    set PATH=C:\ProgramData\chocolatey\bin\
-
-    echo %PATH%
-
     Remove-Item -Recurse -Force .sonarqube
 
     SonarQube.Scanner.MSBuild begin /k:"Services" /d:"sonar.coverage.exclusions=tests/**/*" /d:"sonar.organization=akritikos-github" /d:"sonar.host.url=https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="Kritikos.Services.coverage.xml"
