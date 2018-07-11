@@ -7,6 +7,7 @@
     <DebugType>Full</DebugType>
     <StartupObject />
     <RootNamespace>Kritikos.ServicesTests</RootNamespace>
+    <ProjectGuid>{0ECB7168-99DF-4450-85A3-76A368604774}</ProjectGuid>
   </PropertyGroup>
 
   <ItemGroup>

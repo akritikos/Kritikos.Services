@@ -5,6 +5,7 @@
     <CodeAnalysisRuleSet>..\..\.config\stylecop.ruleset</CodeAnalysisRuleSet>
     <AssemblyName>Kritikos.Services</AssemblyName>
     <RootNamespace>Kritikos.Services</RootNamespace>
+    <ProjectGuid>{AF25267F-31D1-469E-9B6C-F444E7DD3F8D}</ProjectGuid>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
