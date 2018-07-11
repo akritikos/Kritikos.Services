@@ -29,6 +29,8 @@ install:
   - dotnet restore --packages packages
 before_build:
 - ps: >-
+    set PATH=C:\ProgramData\chocolatey\bin;%PATH%
+
     choco install opencover.portable codecov sonarscanner-msbuild-netcoreapp2.0 -y --use-system-powershell --no-progress
 
     choco install coveralls.io --source https://dotnet.myget.org/F/dotnet-buildtools/api/v2
@@ -42,6 +44,8 @@ after_build:
   - SonarQube.Scanner.MSBuild end /d:"sonar.login=$env:SONARCLOUD_TOKEN"
 test_script:
 - ps: >-
+    set PATH=C:\ProgramData\chocolatey\bin;%PATH%
+
     Remove-Item -Recurse -Force .sonarqube
 
     SonarQube.Scanner.MSBuild begin /k:"Services" /d:"sonar.organization=akritikos-github" /d:"sonar.host.url=https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="Kritikos.Services.coverage.xml"
@@ -55,4 +59,6 @@ test_script:
     Push-AppveyorArtifact Kritikos.Services.coverage.xml
 after_test:
 - ps: >-
+    set PATH=C:\ProgramData\chocolatey\bin;%PATH%
+
     codecov -f Kritikos.Services.coverage.xml -t $env:CODECOV_TOKEN
