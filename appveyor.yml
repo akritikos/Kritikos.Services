@@ -30,9 +30,9 @@ install:
   - dotnet restore --packages packages
 before_build:
 - ps: >-
-    choco install opencover.portable codecov sonarscanner-msbuild-netcoreapp2.0 -y --use-system-powershell --no-progress
+    choco install opencover.portable codecov sonarscanner-msbuild-netcoreapp2.0 -y --no-progress
 
-    choco install coveralls.io --source https://dotnet.myget.org/F/dotnet-buildtools/api/v2
+    choco install coveralls.io --source https://dotnet.myget.org/F/dotnet-buildtools/api/v2 -y --no-progress
 
     SonarQube.Scanner.MSBuild begin /k:"Services" /d:"sonar.host.url=https://sonarcloud.io" /d:"sonar.organization=akritikos-github" /d:sonar.login=$env:SONAR_REPO_TOKEN
 build:
@@ -47,7 +47,7 @@ test_script:
 
     Remove-Item -Recurse -Force .sonarqube
 
-    SonarQube.Scanner.MSBuild begin /k:"Services" /d:"sonar.coverage.exclusions=tests/*" /d:"sonar.organization=akritikos-github" /d:"sonar.host.url=https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="Kritikos.Services.coverage.xml"
+    SonarQube.Scanner.MSBuild begin /k:"Services" /d:"sonar.coverage.exclusions=tests/**/*" /d:"sonar.organization=akritikos-github" /d:"sonar.host.url=https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="Kritikos.Services.coverage.xml"
 
     OpenCover.Console.exe -register:user -target:"dotnet.exe" -targetargs:"test tests/Kritikos.Services.Tests --configuration Debug /p:DebugType=Full" -output:Kritikos.Services.coverage.xml -oldStyle -excludebyattribute:*.ExcludeFromCodeCoverage*^ -filter:"+[*]* -[Kritikos.Services.Tests*]*" -hideskipped:all
 
