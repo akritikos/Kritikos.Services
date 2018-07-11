@@ -48,7 +48,7 @@ test_script:
 
     Remove-Item -Recurse -Force .sonarqube
 
-    SonarQube.Scanner.MSBuild begin /k:"Services" /d:"sonar.organization=akritikos-github" /d:"sonar.host.url=https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="Kritikos.Services.coverage.xml"
+    SonarQube.Scanner.MSBuild begin /k:"Services" /d:"sonar.sources=./src" /d:"sonar.organization=akritikos-github" /d:"sonar.host.url=https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="Kritikos.Services.coverage.xml"
 
     OpenCover.Console.exe -register:user -target:"dotnet.exe" -targetargs:"test tests/Kritikos.Services.Tests --configuration Debug /p:DebugType=Full"  -output:Kritikos.Services.coverage.xml -oldStyle -excludebyattribute:*.ExcludeFromCodeCoverage*^ -filter:"+[*]* -[Kritikos.Services.Tests*]*" -hideskipped:all
 
