@@ -466,3 +466,5 @@ typings/
 # End of https://www.gitignore.io/api/linux,windows,aspnetcore,visualstudio,visualstudiocode
 appSettings.local.json
 connectionStrings.json
+.sonarqube
+*.coverage.xml
