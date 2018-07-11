@@ -24,31 +24,32 @@ cache:
   - C:\Users\appveyor\.sonar\cache -> appveyor.yml
   - C:\ProgramData\chocolatey\bin -> appveyor.yml
   - C:\ProgramData\chocolatey\lib -> appveyor.yml
+  - C:\ProgramData\chocolatey\cache -> appveyor.yml
 install:
   - git submodule -q update --init
   - dotnet restore --packages packages
 before_build:
 - ps: >-
-    choco install opencover.portable codecov msbuild-sonarqube-runner sonarscanner-msbuild-netcoreapp2.0 -y --no-progress
+    choco install opencover.portable codecov sonarscanner-msbuild-net46 sonarscanner-msbuild-netcoreapp2.0 -y --no-progress -c C:\ProgramData\chocolatey\cache
 
-    choco install coveralls.io --source https://dotnet.myget.org/F/dotnet-buildtools/api/v2 -y --no-progress
+    choco install coveralls.io --source https://dotnet.myget.org/F/dotnet-buildtools/api/v2 -y --no-progress -c C:\ProgramData\chocolatey\cache
 
-    SonarQube.Scanner.MSBuild begin /k:"Services" /d:"sonar.host.url=https://sonarcloud.io" /d:"sonar.organization=akritikos-github" /d:sonar.login=$env:SONAR_REPO_TOKEN
+    SonarScanner.MSBuild.exe begin /k:"Services" /d:"sonar.host.url=https://sonarcloud.io" /d:"sonar.organization=akritikos-github" /d:"sonar.login=$env:SONAR_REPO_TOKEN"
 build:
   project: Kritikos.Services.sln
   parallel: true
   verbosity: minimal
 after_build:
-  - SonarQube.Scanner.MSBuild end /d:"sonar.login=$env:SONAR_REPO_TOKEN"
+  - SonarScanner.MSBuild.exe end /d:sonar.login=$env:SONAR_REPO_TOKEN
 test_script:
 - ps: >-
     Remove-Item -Recurse -Force .sonarqube
 
-    SonarQube.Scanner.MSBuild begin /k:"Services" /d:"sonar.coverage.exclusions=tests/**/*" /d:"sonar.organization=akritikos-github" /d:"sonar.host.url=https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="Kritikos.Services.coverage.xml"
+    SonarScanner.MSBuild.exe begin /k:"Services" /d:"sonar.coverage.exclusions=tests/**/*" /d:"sonar.organization=akritikos-github" /d:"sonar.host.url=https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="Kritikos.Services.coverage.xml" /d:"sonar.login=$env:SONAR_REPO_TOKEN"
 
     OpenCover.Console.exe -register:user -target:"dotnet.exe" -targetargs:"test tests/Kritikos.Services.Tests --configuration Debug /p:DebugType=Full" -output:Kritikos.Services.coverage.xml -oldStyle -excludebyattribute:*.ExcludeFromCodeCoverage*^ -filter:"+[*]* -[Kritikos.Services.Tests*]*" -hideskipped:all
 
-    SonarQube.Scanner.MSBuild end /d:"sonar.login=$env:SONAR_REPO_TOKEN"
+    SonarScanner.MSBuild.exe end /d:"sonar.login=$env:SONAR_REPO_TOKEN"
 
     coveralls.net.exe --opencover Kritikos.Services.coverage.xml -r $env:COVERALLS_REPO_TOKEN
 
