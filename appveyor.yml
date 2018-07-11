@@ -15,6 +15,8 @@ environment:
     secure: Bf3wUfAmQNDpzqxcf/7gbDJP6fgz4xnKy8wwoM45N+VxR/FmgOlm1VElFGTrQTf5
   CODECOV_TOKEN:
     secure: +Sz/AmKKNEuZJqjvOWn7jzvyQyjy2ZIzPmELUeN2ulcloND4d60Qs81wD40A8oFt
+  COVERALLS_REPO_TOKEN:
+    secure: 1XdO8Eb9pykvXSu2CLDDO0znLQ1i6rfIBrP6xxCIUK7lSF7xLTelHi6I7qyLTyGs
 matrix:
   fast_finish: true
 cache:
@@ -27,28 +29,30 @@ install:
   - dotnet restore --packages packages
 before_build:
 - ps: >-
-    choco install opencover.portable -y --use-system-powershell --no-progress
+    choco install opencover.portable codecov sonarscanner-msbuild-netcoreapp2.0 -y --use-system-powershell --no-progress
 
-    choco install codecov -y --use-system-powershell --no-progress
+    choco install coveralls.io --source https://dotnet.myget.org/F/dotnet-buildtools/api/v2
 
-    choco install sonarscanner-msbuild-netcoreapp2.0 -y --use-system-powershell --no-progress
-
-    SonarScanner.MSBuild begin /k:"Services" /d:"sonar.host.url=https://sonarcloud.io" /d:"sonar.organization=akritikos-github" /d:sonar.login=$env:SONAR_REPO_TOKEN
+    SonarQube.Scanner.MSBuild begin /k:"Services" /d:"sonar.host.url=https://sonarcloud.io" /d:"sonar.organization=akritikos-github" /d:sonar.login=$env:SONAR_REPO_TOKEN
 build:
   project: Kritikos.Services.sln
   parallel: true
   verbosity: minimal
 after_build:
-  - SonarScanner.MSBuild end /d:"sonar.login=$env:SONARCLOUD_TOKEN"
+  - SonarQube.Scanner.MSBuild end /d:"sonar.login=$env:SONARCLOUD_TOKEN"
 test_script:
 - ps: >-
     Remove-Item -Recurse -Force .sonarqube
 
     SonarQube.Scanner.MSBuild begin /k:"Services" /d:"sonar.organization=akritikos-github" /d:"sonar.host.url=https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="Kritikos.Services.coverage.xml"
 
-    OpenCover.Console.exe -register:user -target:"dotnet.exe" -targetargs:"test Kritikos.Services.Tests --configuration Debug /p:DebugType=Full"  -output:Kritikos.Services.coverage.xml -oldStyle -excludebyattribute:*.ExcludeFromCodeCoverage*^ -filter:"+[*]* -[Kritikos.Services.Tests*]*" -hideskipped:all
+    OpenCover.Console.exe -register:user -target:"dotnet.exe" -targetargs:"test tests/Kritikos.Services.Tests --configuration Debug /p:DebugType=Full"  -output:Kritikos.Services.coverage.xml -oldStyle -excludebyattribute:*.ExcludeFromCodeCoverage*^ -filter:"+[*]* -[Kritikos.Services.Tests*]*" -hideskipped:all
+
+    SonarQube.Scanner.MSBuild end /d:"sonar.login=$env:SONARCLOUD_TOKEN"
+
+    coveralls.net.exe --opencover Kritikos.Services.coverage.xml -r $env:COVERALLS_REPO_TOKEN
 
     Push-AppveyorArtifact Kritikos.Services.coverage.xml
 after_test:
 - ps: >-
-    codecov -f MSolve_coverage.xml  -t $env:CODECOV_TOKEN
+    codecov -f Kritikos.Services.coverage.xml -t $env:CODECOV_TOKEN
