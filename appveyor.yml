@@ -12,7 +12,7 @@ environment:
   GITHUB_REPO_TOKEN:
     secure: Kt8llg7P6qDLTxsELrT4mTcPnY+gNCHw7FrNOyuvQTWdQ774qBosGjZQdf0TDlbp
   SONAR_REPO_TOKEN:
-    secure: Bf3wUfAmQNDpzqxcf/7gbDJP6fgz4xnKy8wwoM45N+VxR/FmgOlm1VElFGTrQTf5
+    secure: e1Ym6eyqfES81vrUYE3T6ClHC+hduKNyBG8zeoICC8+v8Pl7le/5M/yHfSx5ZZU6
   CODECOV_TOKEN:
     secure: +Sz/AmKKNEuZJqjvOWn7jzvyQyjy2ZIzPmELUeN2ulcloND4d60Qs81wD40A8oFt
   COVERALLS_REPO_TOKEN:
@@ -21,11 +21,9 @@ matrix:
   fast_finish: true
 cache:
   - packages -> appveyor.yml
-  # - C:\Users\appveyor\.sonar\cache -> appveyor.yml
-  # - C:\ProgramData\chocolatey\bin -> appveyor.yml
-  # - C:\ProgramData\chocolatey\lib -> appveyor.yml
-init:
-  - set PATH=C:\ProgramData\chocolatey\bin;%PATH%
+  - C:\Users\appveyor\.sonar\cache -> appveyor.yml
+  - C:\ProgramData\chocolatey\bin -> appveyor.yml
+  - C:\ProgramData\chocolatey\lib -> appveyor.yml
 install:
   - git submodule -q update --init
   - dotnet restore --packages packages
@@ -41,7 +39,7 @@ build:
   parallel: true
   verbosity: minimal
 after_build:
-  - SonarQube.Scanner.MSBuild end /d:"sonar.login=$env:SONARCLOUD_TOKEN"
+  - SonarQube.Scanner.MSBuild end /d:"sonar.login=$env:SONAR_REPO_TOKEN"
 test_script:
 - ps: >-
     Remove-Item -Recurse -Force .sonarqube
@@ -50,7 +48,7 @@ test_script:
 
     OpenCover.Console.exe -register:user -target:"dotnet.exe" -targetargs:"test tests/Kritikos.Services.Tests --configuration Debug /p:DebugType=Full" -output:Kritikos.Services.coverage.xml -oldStyle -excludebyattribute:*.ExcludeFromCodeCoverage*^ -filter:"+[*]* -[Kritikos.Services.Tests*]*" -hideskipped:all
 
-    SonarQube.Scanner.MSBuild end /d:"sonar.login=$env:SONARCLOUD_TOKEN"
+    SonarQube.Scanner.MSBuild end /d:"sonar.login=$env:SONAR_REPO_TOKEN"
 
     coveralls.net.exe --opencover Kritikos.Services.coverage.xml -r $env:COVERALLS_REPO_TOKEN
 
@@ -59,4 +57,4 @@ after_test:
 - ps: >-
     set PATH=C:\ProgramData\chocolatey\bin;%PATH%
 
-    codecov -f Kritikos.Services.coverage.xml -t $env:CODECOV_TOKEN
+    codecov -f Kritikos.Services.coverage.xml -t $env:SONAR_REPO_TOKEN
