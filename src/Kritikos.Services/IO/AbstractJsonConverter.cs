@@ -13,7 +13,7 @@ namespace Kritikos.Services.IO
 	/// <typeparam name="T">Type of the abstract class</typeparam>
 	public abstract class AbstractJsonConverter<T> : JsonConverter
 	{
-		public override bool CanConvert(Type objecType) => typeof(T).IsAssignableFrom(objecType);
+		public override bool CanConvert(Type objectType) => typeof(T).IsAssignableFrom(objectType);
 
 		public override object ReadJson(
 			JsonReader reader,
