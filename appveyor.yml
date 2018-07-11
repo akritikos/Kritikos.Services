@@ -34,28 +34,26 @@ before_build:
 
     choco install coveralls.io --source https://dotnet.myget.org/F/dotnet-buildtools/api/v2 -y --no-progress -c C:\ProgramData\chocolatey\cache
 
-    SonarScanner.MSBuild.exe begin /k:"Services" /d:"sonar.host.url=https://sonarcloud.io" /d:"sonar.organization=akritikos-github" /d:"sonar.login=$env:SONAR_REPO_TOKEN"
+    SonarScanner.MSBuild.exe begin /k:Services /d:sonar.host.url=https://sonarcloud.io /d:sonar.organization=akritikos-github /d:sonar.login=$env:SONAR_REPO_TOKEN
 build:
   project: Kritikos.Services.sln
   parallel: true
   verbosity: minimal
 after_build:
-  - SonarScanner.MSBuild.exe end /d:"sonar.login=$env:SONAR_REPO_TOKEN"
+  - SonarScanner.MSBuild.exe end /d:sonar.login=$env:SONAR_REPO_TOKEN
 test_script:
 - ps: >-
     Remove-Item -Recurse -Force .sonarqube
 
-    SonarScanner.MSBuild.exe begin /k:"Services" /d:"sonar.coverage.exclusions=tests/**/*" /d:"sonar.organization=akritikos-github" /d:"sonar.host.url=https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="Kritikos.Services.coverage.xml" /d:"sonar.login=$env:SONAR_REPO_TOKEN"
+    SonarScanner.MSBuild.exe begin /k:Services /d:sonar.coverage.exclusions=tests/**/* /d:sonar.organization=akritikos-github /d:sonar.host.url=https://sonarcloud.io /d:sonar.cs.opencover.reportsPaths=Kritikos.Services.coverage.xml /d:sonar.login=$env:SONAR_REPO_TOKEN
 
     OpenCover.Console.exe -register:user -target:"dotnet.exe" -targetargs:"test tests/Kritikos.Services.Tests --configuration Debug /p:DebugType=Full" -output:Kritikos.Services.coverage.xml -oldStyle -excludebyattribute:*.ExcludeFromCodeCoverage*^ -filter:"+[*]* -[Kritikos.Services.Tests*]*" -hideskipped:all
-
-    SonarScanner.MSBuild.exe end /d:"sonar.login=$env:SONAR_REPO_TOKEN"
-
-    coveralls.net.exe --opencover Kritikos.Services.coverage.xml -r $env:COVERALLS_REPO_TOKEN
 
     Push-AppveyorArtifact Kritikos.Services.coverage.xml
 after_test:
 - ps: >-
-    set PATH=C:\ProgramData\chocolatey\bin;%PATH%
+    SonarScanner.MSBuild.exe end /d:sonar.login=$env:SONAR_REPO_TOKEN
 
-    codecov -f Kritikos.Services.coverage.xml -t $env:SONAR_REPO_TOKEN
+    coveralls.net.exe --opencover Kritikos.Services.coverage.xml -r $env:COVERALLS_REPO_TOKEN
+
+    codecov -f Kritikos.Services.coverage.xml -t $env:CODECOV_TOKEN
