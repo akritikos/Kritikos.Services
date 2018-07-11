@@ -34,6 +34,8 @@ before_build:
 
     choco install coveralls.io --source https://dotnet.myget.org/F/dotnet-buildtools/api/v2 -y --no-progress
 
+    dir C:\ProgramData\chocolatey\bin
+
     SonarQube.Scanner.MSBuild begin /k:"Services" /d:"sonar.host.url=https://sonarcloud.io" /d:"sonar.organization=akritikos-github" /d:sonar.login=$env:SONAR_REPO_TOKEN
 build:
   project: Kritikos.Services.sln
