@@ -21,9 +21,9 @@ matrix:
   fast_finish: true
 cache:
   - packages -> appveyor.yml
-  - C:\Users\appveyor\.sonar\cache -> appveyor.yml
-  - C:\ProgramData\chocolatey\bin -> appveyor.yml
-  - C:\ProgramData\chocolatey\lib -> appveyor.yml
+  # - C:\Users\appveyor\.sonar\cache -> appveyor.yml
+  # - C:\ProgramData\chocolatey\bin -> appveyor.yml
+  # - C:\ProgramData\chocolatey\lib -> appveyor.yml
 install:
   - git submodule -q update --init
   - set PATH=C:\ProgramData\chocolatey\bin;%PATH%
@@ -46,6 +46,8 @@ after_build:
 test_script:
 - ps: >-
     set PATH=C:\ProgramData\chocolatey\bin\
+
+    echo %PATH%
 
     Remove-Item -Recurse -Force .sonarqube
 
