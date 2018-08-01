@@ -45,7 +45,7 @@ after_build:
   - SonarScanner.MSBuild.exe end /d:sonar.login=%SONAR_REPO_TOKEN%
 test_script:
 - cmd: >-
-    Remove-Item -Recurse -Force .sonarqube
+    rmdir /s /q .sonarqube
 
     SonarScanner.MSBuild.exe begin /k:Services /d:sonar.coverage.exclusions=tests/**/* /d:sonar.organization=akritikos-github /d:sonar.host.url=https://sonarcloud.io /d:sonar.cs.opencover.reportsPaths=Kritikos.Services.coverage.xml /d:sonar.login=%SONAR_REPO_TOKEN%
 
