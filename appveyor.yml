@@ -33,9 +33,9 @@ before_build:
     choco install coveralls.io --source https://dotnet.myget.org/F/dotnet-buildtools/api/v2 -y --no-progress -c C:\ProgramData\chocolatey\cache
 
     IF "%APPVEYOR_PULL_REQUEST_NUMBER%"=="" (
-    SonarScanner.MSBuild.exe begin /k:"Yggdrasil" /d:sonar.organization="akritikos-github" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login=%SONAR_REPO_TOKEN%
+    SonarScanner.MSBuild.exe begin /k:"Services" /d:sonar.organization="akritikos-github" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login=%SONAR_REPO_TOKEN%
     ) ELSE (
-    SonarScanner.MSBuild.exe begin /k:"Yggdrasil" /d:sonar.organization="akritikos-github" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login=%SONAR_REPO_TOKEN% /d:"sonar.github.pullRequest=%APPVEYOR_PULL_REQUEST_NUMBER%" /d:"sonar.github.repository=akritikos/Yggdrasil" /d:"sonar.github.oauth=%GITHUB_REPO_TOKEN%"
+    SonarScanner.MSBuild.exe begin /k:"Services" /d:sonar.organization="akritikos-github" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login=%SONAR_REPO_TOKEN% /d:"sonar.github.pullRequest=%APPVEYOR_PULL_REQUEST_NUMBER%" /d:"sonar.github.repository=akritikos/Yggdrasil" /d:"sonar.github.oauth=%GITHUB_REPO_TOKEN%"
     )
 build:
   project: Kritikos.Services.sln
