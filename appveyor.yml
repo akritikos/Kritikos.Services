@@ -54,8 +54,8 @@ after_test:
 - cmd: >-
     SonarScanner.MSBuild.exe end /d:sonar.login=%SONAR_REPO_TOKEN%
 
-    coveralls.net.exe --opencover Kritikos.Services.coverage.xml -r $env:COVERALLS_REPO_TOKEN
+    coveralls.net.exe --opencover Kritikos.Services.coverage.xml -r %COVERALLS_REPO_TOKEN%
 
-    codecov -f Kritikos.Services.coverage.xml -t $env:CODECOV_TOKEN
+    codecov -f Kritikos.Services.coverage.xml -t %CODECOV_TOKEN%
 
     Push-AppveyorArtifact Kritikos.Services.coverage.xml
