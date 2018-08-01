@@ -12,7 +12,7 @@ environment:
   GITHUB_REPO_TOKEN:
     secure: Kt8llg7P6qDLTxsELrT4mTcPnY+gNCHw7FrNOyuvQTWdQ774qBosGjZQdf0TDlbp
   SONAR_REPO_TOKEN:
-    secure: e1Ym6eyqfES81vrUYE3T6ClHC+hduKNyBG8zeoICC8+v8Pl7le/5M/yHfSx5ZZU6
+    secure: CtbKM8moLm+2uxfH/QxFxuX62y4RoQrfYtx2z8iRM1EhdwVBDwLq1ebxY0J02Xka
   CODECOV_TOKEN:
     secure: +Sz/AmKKNEuZJqjvOWn7jzvyQyjy2ZIzPmELUeN2ulcloND4d60Qs81wD40A8oFt
   COVERALLS_REPO_TOKEN:
@@ -22,8 +22,6 @@ matrix:
 cache:
   - packages -> appveyor.yml
   - C:\Users\appveyor\.sonar\cache -> appveyor.yml
-  - C:\ProgramData\chocolatey\bin -> appveyor.yml
-  - C:\ProgramData\chocolatey\lib -> appveyor.yml
   - C:\ProgramData\chocolatey\cache -> appveyor.yml
 install:
   - git submodule -q update --init
@@ -34,26 +32,30 @@ before_build:
 
     choco install coveralls.io --source https://dotnet.myget.org/F/dotnet-buildtools/api/v2 -y --no-progress -c C:\ProgramData\chocolatey\cache
 
-    SonarScanner.MSBuild.exe begin /k:Services /d:sonar.host.url=https://sonarcloud.io /d:sonar.organization=akritikos-github /d:sonar.login=$env:SONAR_REPO_TOKEN
+    IF "%APPVEYOR_PULL_REQUEST_NUMBER%"=="" (
+    SonarScanner.MSBuild.exe begin /k:"Yggdrasil" /d:sonar.organization="akritikos-github" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login=%SONAR_REPO_TOKEN%
+    ) ELSE (
+    SonarScanner.MSBuild.exe begin /k:"Yggdrasil" /d:sonar.organization="akritikos-github" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login=%SONAR_REPO_TOKEN% /d:"sonar.github.pullRequest=%APPVEYOR_PULL_REQUEST_NUMBER%" /d:"sonar.github.repository=akritikos/Yggdrasil" /d:"sonar.github.oauth=%GITHUB_REPO_TOKEN%"
+    )
 build:
   project: Kritikos.Services.sln
   parallel: true
   verbosity: minimal
 after_build:
-  - SonarScanner.MSBuild.exe end /d:sonar.login=$env:SONAR_REPO_TOKEN
+  - SonarScanner.MSBuild.exe end /d:sonar.login=%SONAR_REPO_TOKEN%
 test_script:
 - ps: >-
     Remove-Item -Recurse -Force .sonarqube
 
-    SonarScanner.MSBuild.exe begin /k:Services /d:sonar.coverage.exclusions=tests/**/* /d:sonar.organization=akritikos-github /d:sonar.host.url=https://sonarcloud.io /d:sonar.cs.opencover.reportsPaths=Kritikos.Services.coverage.xml /d:sonar.login=$env:SONAR_REPO_TOKEN
+    SonarScanner.MSBuild.exe begin /k:Services /d:sonar.coverage.exclusions=tests/**/* /d:sonar.organization=akritikos-github /d:sonar.host.url=https://sonarcloud.io /d:sonar.cs.opencover.reportsPaths=Kritikos.Services.coverage.xml /d:sonar.login=%SONAR_REPO_TOKEN%
 
     OpenCover.Console.exe -register:user -target:"dotnet.exe" -targetargs:"test tests/Kritikos.Services.Tests --configuration Debug /p:DebugType=Full" -output:Kritikos.Services.coverage.xml -oldStyle -excludebyattribute:*.ExcludeFromCodeCoverage*^ -filter:"+[*]* -[Kritikos.Services.Tests*]*" -hideskipped:all
-
-    Push-AppveyorArtifact Kritikos.Services.coverage.xml
 after_test:
 - ps: >-
-    SonarScanner.MSBuild.exe end /d:sonar.login=$env:SONAR_REPO_TOKEN
+    SonarScanner.MSBuild.exe end /d:sonar.login=%SONAR_REPO_TOKEN%
 
     coveralls.net.exe --opencover Kritikos.Services.coverage.xml -r $env:COVERALLS_REPO_TOKEN
 
     codecov -f Kritikos.Services.coverage.xml -t $env:CODECOV_TOKEN
+
+    Push-AppveyorArtifact Kritikos.Services.coverage.xml
